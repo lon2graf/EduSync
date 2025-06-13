@@ -1,6 +1,3 @@
-Вот соответствующая модель `Teacher` на Dart, которая отражает твою таблицу `Teachers`:
-
-```dart
 class Teacher {
   final int id;
   final String name;
@@ -48,6 +45,4 @@ class Teacher {
     };
   }
 }
-```
 
-✅ Готов к следующей таблице!
