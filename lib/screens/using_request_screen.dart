@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:edu_sync/models/using_request_model.dart';
 import 'package:edu_sync/services/using_request_services.dart';
+import 'package:edu_sync/services/local_storage_preferences.dart';
 
 class UsingRequestScreen extends StatefulWidget {
   const UsingRequestScreen({Key? key});
@@ -11,7 +12,12 @@ class UsingRequestScreen extends StatefulWidget {
 
 class _UsingRequestScreenState extends State<UsingRequestScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  //для того, чтобы блокировать кнопку отправки -> предотвращение спама
   bool _isLoading = false;
+
+  //для того, чтобы фиксировать отправлена ли заявка или нет,
+  //чтобы потом скрывать форму для отправки заявки
   bool _submitted = false;
 
   final TextEditingController institutionController = TextEditingController();
@@ -54,6 +60,7 @@ class _UsingRequestScreenState extends State<UsingRequestScreen> {
       setState(() {
         _submitted = true; // скрываем форму
       });
+      await LocalStorageService.setApplicationSent(true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Ошибка при отправке заявки')),

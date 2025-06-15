@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:edu_sync/screens/welcome_screen.dart';
 import 'package:edu_sync/screens/using_request_screen.dart';
+import 'package:edu_sync/screens/splash_screen.dart';
+import 'package:edu_sync/screens/request_status_check_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +18,7 @@ void main() async {
   }
 
   final GoRouter appRouter = GoRouter(
-    initialLocation: '/welcome',
+    initialLocation: '/splash',
     routes: [
       GoRoute(
         path: '/welcome',
@@ -25,6 +27,14 @@ void main() async {
       GoRoute(
         path: '/request',
         builder: (context, state) => const UsingRequestScreen(),
+      ),
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: '/check_request',
+        builder: (context, state) => const RequestStatusCheckScreen(),
       ),
     ],
   );
