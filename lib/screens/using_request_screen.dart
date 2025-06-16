@@ -49,18 +49,11 @@ class _UsingRequestScreenState extends State<UsingRequestScreen> {
     final success = await UsingRequestServices.submitRequest(request);
 
     if (success) {
-      // Очистка формы
-      institutionController.clear();
-      addressController.clear();
-      surnameController.clear();
-      nameController.clear();
-      patronymicController.clear();
-      emailController.clear();
-
       setState(() {
         _submitted = true; // скрываем форму
       });
       await LocalStorageService.setApplicationSent(true);
+      await LocalStorageService.setSendersEmail(emailController.text.trim());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Ошибка при отправке заявки')),

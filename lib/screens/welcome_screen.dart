@@ -16,10 +16,7 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Логотип
-              SvgPicture.asset(
-                'assets/EduSync.svg', // путь к svg файлу
-                height: 250,
-              ),
+              SvgPicture.asset('assets/EduSync.svg', height: 250),
               const SizedBox(height: 24),
 
               // Название программы
@@ -44,29 +41,57 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 child: const Text('Подключить к ОО'),
               ),
-              const SizedBox(height: 16),
 
-              // Кнопка "Войти как ученик"
-              OutlinedButton(
-                onPressed: () {
-                  // переход на логин для ученика
+              const SizedBox(height: 12),
+
+              // Ссылка "или проверить статус заявки"
+              GestureDetector(
+                onTap: () {
+                  context.go('/check_request');
                 },
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
+                child: const Text(
+                  'или проверить статус заявки',
+                  style: TextStyle(
+                    color: Colors.blueAccent,
+                    fontSize: 14,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
-                child: const Text('Войти как ученик'),
               ),
-              const SizedBox(height: 16),
 
-              // Кнопка "Войти как учитель"
-              OutlinedButton(
-                onPressed: () {
-                  // переход на логин для учителя
+              const SizedBox(height: 32),
+
+              // Вход как ученик
+              GestureDetector(
+                onTap: () {
+                  // переход на логин для ученика
+                  context.go('/student-login');
                 },
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
+                child: const Text(
+                  'Войти как ученик',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
-                child: const Text('Войти как учитель'),
+              ),
+              const SizedBox(height: 12),
+
+              // Вход как учитель
+              GestureDetector(
+                onTap: () {
+                  // переход на логин для учителя
+                  context.go('/teacher-login');
+                },
+                child: const Text(
+                  'Войти как учитель',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
               ),
             ],
           ),
