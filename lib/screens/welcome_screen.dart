@@ -10,13 +10,17 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 32),
+
               // Логотип
-              SvgPicture.asset('assets/EduSync.svg', height: 250),
+              Center(
+                child: SvgPicture.asset('assets/EduSync.svg', height: 200),
+              ),
               const SizedBox(height: 24),
 
               // Название программы
@@ -24,75 +28,90 @@ class WelcomeScreen extends StatelessWidget {
                 'EduSync — система оценки и обратной связи',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 32),
 
               // Кнопка "Подключить к ОО"
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: () {
                   context.go('/request');
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
+                  backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                child: const Text('Подключить к ОО'),
+                icon: const Icon(Icons.school),
+                label: const Text(
+                  'Подключить к ОО',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
 
               const SizedBox(height: 12),
 
               // Ссылка "или проверить статус заявки"
-              GestureDetector(
-                onTap: () {
+              TextButton.icon(
+                onPressed: () {
                   context.go('/check_request');
                 },
-                child: const Text(
-                  'или проверить статус заявки',
+                icon: const Icon(
+                  Icons.mark_email_read,
+                  color: Colors.blueAccent,
+                ),
+                label: const Text(
+                  'Проверить статус заявки',
                   style: TextStyle(
-                    color: Colors.blueAccent,
                     fontSize: 14,
                     decoration: TextDecoration.underline,
                   ),
                 ),
+                style: TextButton.styleFrom(foregroundColor: Colors.blueAccent),
               ),
 
-              const SizedBox(height: 32),
+              const Divider(height: 40, thickness: 1),
 
               // Вход как ученик
-              GestureDetector(
-                onTap: () {
-                  // переход на логин для ученика
+              TextButton.icon(
+                onPressed: () {
                   context.go('/student-login');
                 },
-                child: const Text(
+                icon: const Icon(Icons.person, color: Colors.black87),
+                label: const Text(
                   'Войти как ученик',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black87,
                     decoration: TextDecoration.underline,
                   ),
                 ),
+                style: TextButton.styleFrom(foregroundColor: Colors.black87),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
 
               // Вход как учитель
-              GestureDetector(
-                onTap: () {
-                  // переход на логин для учителя
+              TextButton.icon(
+                onPressed: () {
                   context.go('/teacher-login');
                 },
-                child: const Text(
+                icon: const Icon(Icons.person_outline, color: Colors.black87),
+                label: const Text(
                   'Войти как учитель',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black87,
                     decoration: TextDecoration.underline,
                   ),
                 ),
+                style: TextButton.styleFrom(foregroundColor: Colors.black87),
               ),
+
+              const SizedBox(height: 32),
             ],
           ),
         ),
