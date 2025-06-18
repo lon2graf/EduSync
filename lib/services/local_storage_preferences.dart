@@ -26,4 +26,10 @@ class LocalStorageService {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_keySendersEmail);
   }
+
+  /// Очищает сохранённый email отправителя заявки
+  static Future<void> clearSendersEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_keySendersEmail);
+  }
 }

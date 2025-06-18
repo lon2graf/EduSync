@@ -1,3 +1,4 @@
+import 'package:edu_sync/models/using_request_model.dart';
 import 'package:edu_sync/services/education_head_servives.dart';
 import 'package:flutter/material.dart';
 import 'package:edu_sync/services/local_storage_preferences.dart';
@@ -18,6 +19,7 @@ class _RequestStatusCheckScreen extends State<RequestStatusCheckScreen> {
   //для того, чтобы блокировать кнопку
   bool _isLoading = false;
   String? _statusMessage;
+  UsingRequestModel? _request;
 
   @override
   void initState() {
@@ -42,31 +44,36 @@ class _RequestStatusCheckScreen extends State<RequestStatusCheckScreen> {
       _statusMessage = null;
     });
 
-    final isAccepted = await UsingRequestServices.getRequestStatusByEmail(
+    final request = await UsingRequestServices.getRequestByEmail(email);
+
+    if (request == null) {
+      setState(() {
+        _isLoading = false;
+        _statusMessage = '❗ Заявка не найдена. Проверьте корректность email.';
+      });
+      return;
+    }
+
+    final accountExists = await EducationHeadServives.isAccountExistByEmail(
       email,
     );
 
-    if (isAccepted == true) {
-      final accountExists = await EducationHeadServives.isAccountExistByEmail(
-        email,
-      );
+    setState(() {
+      _isLoading = false;
+      _request = request;
 
-      setState(() {
-        _isLoading = false;
+      if (request.isAccepted == true) {
         _statusMessage =
             accountExists
                 ? '✅ Ваша заявка одобрена.\nУчётная запись уже существует.\nВойдите в личный кабинет руководителя.'
                 : '✅ Ваша заявка одобрена.\nВы можете зарегистрироваться как руководитель учебной части.';
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
+      } else if (request.isAccepted == false) {
+        _statusMessage = '⏳ Ваша заявка в обработке. Попробуйте позже.';
+      } else {
         _statusMessage =
-            isAccepted == false
-                ? '⏳ Ваша заявка в обработке. Попробуйте позже.'
-                : '❗ Не удалось получить статус заявки.\nПроверьте корректность email.';
-      });
-    }
+            '❗ Не удалось получить статус заявки.\nПроверьте корректность email.';
+      }
+    });
   }
 
   void _submitManual() {
@@ -128,7 +135,10 @@ class _RequestStatusCheckScreen extends State<RequestStatusCheckScreen> {
                             children: [
                               ElevatedButton.icon(
                                 onPressed: () {
-                                  context.go('/register-education-head');
+                                  context.go(
+                                    '/register_education_head',
+                                    extra: _request,
+                                  );
                                 },
                                 icon: const Icon(Icons.login),
                                 label: const Text(

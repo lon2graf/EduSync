@@ -1,5 +1,5 @@
-class EducationHead {
-  final int id;
+class EducationHeadModel {
+  final int? id;
   final String name;
   final String? surname;
   final String? patronymic;
@@ -7,8 +7,8 @@ class EducationHead {
   final String? password;
   final int institutionId;
 
-  EducationHead({
-    required this.id,
+  EducationHeadModel({
+    this.id,
     required this.name,
     this.surname,
     this.patronymic,
@@ -17,8 +17,8 @@ class EducationHead {
     required this.institutionId,
   });
 
-  factory EducationHead.fromJson(Map<String, dynamic> json) {
-    return EducationHead(
+  factory EducationHeadModel.fromJson(Map<String, dynamic> json) {
+    return EducationHeadModel(
       id: json['id'] as int,
       name: json['name'] as String,
       surname: json['surname'],
@@ -31,7 +31,7 @@ class EducationHead {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'name': name,
       'surname': surname,
       'patronymic': patronymic,
