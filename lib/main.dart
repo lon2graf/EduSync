@@ -8,6 +8,7 @@ import 'package:edu_sync/screens/splash_screen.dart';
 import 'package:edu_sync/screens/request_status_check_screen.dart';
 import 'package:edu_sync/screens/education_head_register_screen.dart';
 import 'package:edu_sync/models/using_request_model.dart';
+import 'package:edu_sync/screens/education_head_login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,10 @@ void main() async {
           final request = state.extra as UsingRequestModel;
           return EducationHeadRegisterScreen(); // объект уже доступен через state.extra
         },
+      ),
+      GoRoute(
+        path: '/login_education_head',
+        builder: (context, state) => const EducationHeadLoginScreen(),
       ),
     ],
   );

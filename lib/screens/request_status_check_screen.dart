@@ -156,6 +156,32 @@ class _RequestStatusCheckScreen extends State<RequestStatusCheckScreen> {
                               const SizedBox(height: 16),
                             ],
                           ),
+                        if (_statusMessage ==
+                            '✅ Ваша заявка одобрена.\nУчётная запись уже существует.\nВойдите в личный кабинет руководителя.')
+                          Column(
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  context.go(
+                                    '/login_education_head',
+                                  ); // заменишь на свой роут логина
+                                },
+                                icon: const Icon(Icons.lock_open),
+                                label: const Text(
+                                  'Войти',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 14,
+                                  ),
+                                  backgroundColor: Colors.blueAccent,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                          ),
 
                         if (emailController.text.isEmpty)
                           Align(

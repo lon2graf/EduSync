@@ -66,68 +66,114 @@ class _UsingRequestScreenState extends State<UsingRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Подключение к системе')),
+      appBar: AppBar(
+        title: const Text('Подключение к системе'),
+        centerTitle: true,
+        elevation: 0,
+      ),
       body: SafeArea(
+        minimum: const EdgeInsets.all(16),
         child: _submitted ? _buildSubmittedMessage() : _buildForm(),
       ),
     );
   }
 
   Widget _buildForm() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const Text(
-              'Заявка на подключение к системе',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'Заявка на подключение к системе',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      height: 1.3,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  _buildTextField(institutionController, 'Название учреждения'),
+                  const SizedBox(height: 16),
+                  _buildTextField(addressController, 'Адрес'),
+                  const SizedBox(height: 16),
+                  _buildTextField(surnameController, 'Фамилия'),
+                  const SizedBox(height: 16),
+                  _buildTextField(nameController, 'Имя'),
+                  const SizedBox(height: 16),
+                  _buildTextField(
+                    patronymicController,
+                    'Отчество (необязательно)',
+                    isRequired: false,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildTextField(
+                    emailController,
+                    'Email',
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 32),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: _isLoading ? null : _handleSubmit,
+                    child:
+                        _isLoading
+                            ? const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                            : const Text(
+                              'Отправить заявку',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 24),
-            _buildTextField(institutionController, 'Название учреждения'),
-            _buildTextField(addressController, 'Адрес'),
-            _buildTextField(surnameController, 'Фамилия'),
-            _buildTextField(nameController, 'Имя'),
-            _buildTextField(
-              patronymicController,
-              'Отчество (необязательно)',
-              isRequired: false,
-            ),
-            _buildTextField(
-              emailController,
-              'Email',
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _handleSubmit,
-              child:
-                  _isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('Отправить заявку'),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildSubmittedMessage() {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.all(40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.check_circle_outline, color: Colors.green, size: 100),
-            SizedBox(height: 24),
-            Text(
-              'Ваша заявка успешно отправлена\nи находится в обработке.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.check_circle_outline,
+                color: Theme.of(context).primaryColor,
+                size: 100,
+              ),
+              const SizedBox(height: 32),
+              Text(
+                'Ваша заявка успешно отправлена\nи находится в обработке.',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 20, height: 1.4),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -139,22 +185,31 @@ class _UsingRequestScreenState extends State<UsingRequestScreen> {
     bool isRequired = true,
     TextInputType keyboardType = TextInputType.text,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        decoration: InputDecoration(
-          labelText: labelText,
-          border: const OutlineInputBorder(),
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.grey.shade400),
         ),
-        validator: (value) {
-          if (isRequired && (value == null || value.trim().isEmpty)) {
-            return 'Пожалуйста, заполните это поле';
-          }
-          return null;
-        },
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
+      validator: (value) {
+        if (isRequired && (value == null || value.trim().isEmpty)) {
+          return 'Пожалуйста, заполните это поле';
+        }
+        return null;
+      },
     );
   }
 }

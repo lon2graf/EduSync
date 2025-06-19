@@ -35,4 +35,23 @@ class EducationHeadServives {
       return false;
     }
   }
+
+  static Future<bool> loginEducationHead(String email, String password) async {
+    final supClient = Supabase.instance.client;
+
+    try {
+      final response =
+          await supClient
+              .from('Education_heads')
+              .select()
+              .eq('email', email)
+              .eq('password', password)
+              .maybeSingle();
+
+      return response != null;
+    } catch (e) {
+      print('Ошибка при входе руководителя: $e');
+      return false;
+    }
+  }
 }

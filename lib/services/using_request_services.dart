@@ -8,7 +8,8 @@ class UsingRequestServices {
     try {
       await supClient.from('Using_requests').insert(request.toJson());
       return true;
-    } catch (e) {
+    } catch (e, stack) {
+      print('Стек: $stack');
       print(e);
       return false;
     }
@@ -25,7 +26,8 @@ class UsingRequestServices {
               .eq('email', email)
               .single();
       return response['isAccepted'] as bool?;
-    } catch (e) {
+    } catch (e, stack) {
+      print('Стек: $stack');
       print(e);
       return null;
     }
@@ -48,7 +50,8 @@ class UsingRequestServices {
       } else {
         return null;
       }
-    } catch (e) {
+    } catch (e, stack) {
+      print('Стек: $stack');
       print('Ошибка при получении заявки: $e');
       return null;
     }
