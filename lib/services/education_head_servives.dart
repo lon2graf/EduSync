@@ -46,6 +46,7 @@ class EducationHeadServives {
               .select()
               .eq('email', email)
               .eq('password', password)
+              .limit(1)
               .maybeSingle();
 
       return response != null;
@@ -53,5 +54,28 @@ class EducationHeadServives {
       print('Ошибка при входе руководителя: $e');
       return false;
     }
+  }
+
+  static Future<EducationHeadModel?> getByEmail(String email) async {
+    final supClient = Supabase.instance.client;
+
+    try {
+      final response =
+          await supClient
+              .from('Education_heads')
+              .select(
+                'id, email, surname, name, patronymic, institution_id',
+              ) // без пароля!
+              .eq('email', email)
+              .single();
+
+      if (response != null) {
+        print(response);
+        return EducationHeadModel.fromJson(response);
+      }
+    } catch (e) {
+      print('Ошибка при получении руководителя по email: $e');
+    }
+    return null;
   }
 }

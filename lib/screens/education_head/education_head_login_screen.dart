@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:edu_sync/services/education_head_servives.dart';
+import 'package:go_router/go_router.dart';
 
 class EducationHeadLoginScreen extends StatefulWidget {
   const EducationHeadLoginScreen({Key? key}) : super(key: key);
@@ -36,10 +37,7 @@ class _EducationHeadLoginScreenState extends State<EducationHeadLoginScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Успешный вход 🚀')));
-
-      // TODO: Замени '/education-dashboard' на свой маршрут главного экрана
-      // Например:
-      // context.go('/dashboard');
+      context.push('/education_head/dashboard', extra: email);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Неверный email или пароль ❌')),

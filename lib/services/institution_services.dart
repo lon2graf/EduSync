@@ -28,4 +28,24 @@ class InstitutionService {
       return null;
     }
   }
+
+  static Future<InstitutionModel?> getInstitutionById(int id) async {
+    final supClient = Supabase.instance.client;
+
+    try {
+      final response =
+          await supClient
+              .from('Institutions')
+              .select()
+              .eq('id', id)
+              .maybeSingle();
+
+      if (response != null) {
+        return InstitutionModel.fromJson(response);
+      }
+    } catch (e) {
+      print('Ошибка при получении учреждения: $e');
+    }
+    return null;
+  }
 }

@@ -6,9 +6,11 @@ import 'package:edu_sync/screens/welcome_screen.dart';
 import 'package:edu_sync/screens/using_request_screen.dart';
 import 'package:edu_sync/screens/splash_screen.dart';
 import 'package:edu_sync/screens/request_status_check_screen.dart';
-import 'package:edu_sync/screens/education_head_register_screen.dart';
+import 'package:edu_sync/screens/education_head/education_head_register_screen.dart';
 import 'package:edu_sync/models/using_request_model.dart';
-import 'package:edu_sync/screens/education_head_login_screen.dart';
+import 'package:edu_sync/screens/education_head/education_head_login_screen.dart';
+import 'package:edu_sync/screens/education_head/dashboard_screen.dart';
+import 'package:edu_sync/screens/education_head/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,15 +42,29 @@ void main() async {
         builder: (context, state) => const RequestStatusCheckScreen(),
       ),
       GoRoute(
-        path: '/register_education_head',
+        path: '/education_head/login_education_head',
+        builder: (context, state) => const EducationHeadLoginScreen(),
+      ),
+      GoRoute(
+        path: '/education_head/register_education_head',
         builder: (context, state) {
           final request = state.extra as UsingRequestModel;
           return EducationHeadRegisterScreen(); // объект уже доступен через state.extra
         },
       ),
       GoRoute(
-        path: '/login_education_head',
-        builder: (context, state) => const EducationHeadLoginScreen(),
+        path: '/education_head/dashboard',
+        builder: (context, state) {
+          final email = state.extra as String;
+          return EducationHeadDashboard();
+        },
+      ),
+      GoRoute(
+        path: '/education_head/profile',
+        builder: (context, state) {
+          final email = state.extra as String;
+          return EducationHeadProfileScreen();
+        },
       ),
     ],
   );

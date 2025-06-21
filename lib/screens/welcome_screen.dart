@@ -77,7 +77,22 @@ class WelcomeScreen extends StatelessWidget {
               ),
 
               const Divider(height: 40, thickness: 1),
+              TextButton.icon(
+                onPressed: () {
+                  context.go('/education_head/login_education_head');
+                },
+                icon: const Icon(Icons.person, color: Colors.black87),
+                label: const Text(
+                  'Войти как руководитель ОО',
+                  style: TextStyle(
+                    fontSize: 16,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+                style: TextButton.styleFrom(foregroundColor: Colors.black87),
+              ),
 
+              const SizedBox(height: 8),
               // Вход как ученик
               TextButton.icon(
                 onPressed: () {

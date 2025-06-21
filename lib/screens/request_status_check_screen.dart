@@ -136,7 +136,7 @@ class _RequestStatusCheckScreen extends State<RequestStatusCheckScreen> {
                               ElevatedButton.icon(
                                 onPressed: () {
                                   context.go(
-                                    '/register_education_head',
+                                    '/education_head/register_education_head',
                                     extra: _request,
                                   );
                                 },
@@ -163,7 +163,7 @@ class _RequestStatusCheckScreen extends State<RequestStatusCheckScreen> {
                               ElevatedButton.icon(
                                 onPressed: () {
                                   context.go(
-                                    '/login_education_head',
+                                    '/education_head/login_education_head',
                                   ); // заменишь на свой роут логина
                                 },
                                 icon: const Icon(Icons.lock_open),
