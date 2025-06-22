@@ -1,12 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:edu_sync/services/education_head_servives.dart';
+import 'package:edu_sync/services/institution_services.dart';
+import 'package:edu_sync/services/education_head_cache.dart';
 
-class EducationHeadDashboard extends StatelessWidget {
+class EducationHeadDashboard extends StatefulWidget {
   const EducationHeadDashboard({Key? key}) : super(key: key);
 
   @override
+  State<EducationHeadDashboard> createState() => _EducationHeadDashboardState();
+}
+
+class _EducationHeadDashboardState extends State<EducationHeadDashboard> {
+  bool _isLoading = true;
+  String? _email;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_isLoading) {
+      _email = GoRouterState.of(context).extra as String?;
+      if (_email != null) _loadCache(_email!);
+    }
+  }
+
+  Future<void> _loadCache(String email) async {
+    final head = await EducationHeadServives.getByEmail(email);
+    if (!mounted) return;
+
+    if (head == null) {
+      print('❗ Не удалось загрузить руководителя');
+      return;
+    }
+
+    final institution = await InstitutionService.getInstitutionById(
+      head.institutionId,
+    );
+    if (!mounted) return;
+
+    EducationHeadCache.cachedHead = head;
+    EducationHeadCache.cachedInstitution = institution;
+
+    setState(() => _isLoading = false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final email = GoRouterState.of(context).extra as String?;
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Личный кабинет'), centerTitle: true),
       body: GridView.count(
@@ -18,7 +62,7 @@ class EducationHeadDashboard extends StatelessWidget {
           _DashboardCard(
             icon: Icons.person,
             label: 'Профиль',
-            onTap: () => context.push('/education_head/profile', extra: email),
+            onTap: () => context.push('/education_head/profile'),
           ),
           _DashboardCard(
             icon: Icons.group,
@@ -40,12 +84,13 @@ class EducationHeadDashboard extends StatelessWidget {
             label: 'Успеваемость',
             onTap: () => context.push('/education_head/performance'),
           ),
-
           _DashboardCard(
             icon: Icons.logout,
             label: 'Выйти',
             onTap: () {
-              // Очистка localStorage и переход на логин
+              EducationHeadCache.cachedHead = null;
+              EducationHeadCache.cachedInstitution = null;
+              context.go('/education_head/login');
             },
           ),
         ],

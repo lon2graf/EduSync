@@ -1,5 +1,5 @@
-class Teacher {
-  final int id;
+class TeacherModel {
+  final int? id;
   final String name;
   final String surname;
   final String? patronymic;
@@ -8,8 +8,8 @@ class Teacher {
   final String? department;
   final int instituteId;
 
-  Teacher({
-    required this.id,
+  TeacherModel({
+    this.id,
     required this.name,
     required this.surname,
     this.patronymic,
@@ -19,8 +19,8 @@ class Teacher {
     required this.instituteId,
   });
 
-  factory Teacher.fromJson(Map<String, dynamic> json) {
-    return Teacher(
+  factory TeacherModel.fromJson(Map<String, dynamic> json) {
+    return TeacherModel(
       id: json['id'] as int,
       name: json['name'] as String,
       surname: json['surname'] as String,
@@ -34,7 +34,7 @@ class Teacher {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'name': name,
       'surname': surname,
       'patronymic': patronymic,
