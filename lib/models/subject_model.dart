@@ -1,35 +1,23 @@
-class Subject {
-  final int id;
+class SubjectModel {
+  final int? id;
   final String name;
-  final String? speciality;
-  final String hours;
-  final int semester;
+  final int instituteId;
 
-  Subject({
-    required this.id,
-    required this.name,
-    this.speciality,
-    required this.hours,
-    required this.semester,
-  });
+  SubjectModel({this.id, required this.name, required this.instituteId});
 
-  factory Subject.fromJson(Map<String, dynamic> json) {
-    return Subject(
+  factory SubjectModel.fromJson(Map<String, dynamic> json) {
+    return SubjectModel(
       id: json['id'] as int,
       name: json['name'] as String,
-      speciality: json['speciality'],
-      hours: json['hours'] as String,
-      semester: json['semester'] as int,
+      instituteId: json['institute_id'] as int,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'name': name,
-      'speciality': speciality,
-      'hours': hours,
-      'semester': semester,
+      'institute_id': instituteId,
     };
   }
 }

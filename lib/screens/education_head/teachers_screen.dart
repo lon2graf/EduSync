@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:edu_sync/models/teacher_model.dart';
 import 'package:edu_sync/services/teacher_services.dart';
 import 'package:edu_sync/services/education_head_cache.dart';
+import 'package:edu_sync/services/education_head_servives.dart'; // <-- для loginEducationHead
 
 class EducationHeadTeachersScreen extends StatefulWidget {
   const EducationHeadTeachersScreen({Key? key}) : super(key: key);
@@ -13,8 +14,6 @@ class EducationHeadTeachersScreen extends StatefulWidget {
 
 class _EducationHeadTeachersScreenState
     extends State<EducationHeadTeachersScreen> {
-  static List<TeacherModel>? _cachedTeachers;
-
   List<TeacherModel> _teachers = [];
   bool _isLoading = true;
 
@@ -25,9 +24,9 @@ class _EducationHeadTeachersScreenState
   }
 
   Future<void> _loadTeachers({bool forceReload = false}) async {
-    if (!forceReload && _cachedTeachers != null) {
+    if (!forceReload && EducationHeadCache.cachedTeachers != null) {
       setState(() {
-        _teachers = _cachedTeachers!;
+        _teachers = EducationHeadCache.cachedTeachers!;
         _isLoading = false;
       });
       return;
@@ -49,7 +48,7 @@ class _EducationHeadTeachersScreenState
       institutionId,
     );
 
-    _cachedTeachers = teachers;
+    EducationHeadCache.cachedTeachers = teachers;
 
     setState(() {
       _teachers = teachers;
@@ -169,7 +168,7 @@ class _EducationHeadTeachersScreenState
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Учитель добавлен ✅')),
                     );
-                    _cachedTeachers = null; // сброс кэша
+                    EducationHeadCache.cachedTeachers = null; // сброс кэша
                     _loadTeachers(forceReload: true); // обновить список
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -178,6 +177,113 @@ class _EducationHeadTeachersScreenState
                   }
                 },
                 child: const Text('Добавить'),
+              ),
+            ],
+          ),
+    );
+  }
+
+  Future<void> _showTeacherCredentialsDialog(TeacherModel teacher) async {
+    final adminPasswordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    final adminEmail = EducationHeadCache.cachedHead?.email;
+
+    if (adminEmail == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ошибка: администратор не авторизован')),
+      );
+      return;
+    }
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Подтверждение доступа'),
+            content: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Введите пароль администратора, чтобы увидеть данные:',
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: adminPasswordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Пароль администратора',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator:
+                        (value) =>
+                            value == null || value.isEmpty
+                                ? 'Введите пароль'
+                                : null,
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Отмена'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (!formKey.currentState!.validate()) return;
+
+                  // Проверяем пароль через сервис
+                  final loginSuccess =
+                      await EducationHeadServives.loginEducationHead(
+                        adminEmail,
+                        adminPasswordController.text.trim(),
+                      );
+
+                  if (loginSuccess) {
+                    Navigator.pop(context); // закрыть ввод пароля
+
+                    // Показать учётные данные учителя
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text('Данные учителя'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  leading: const Icon(Icons.email),
+                                  title: const Text('Логин (email):'),
+                                  subtitle: Text(teacher.email),
+                                ),
+                                ListTile(
+                                  leading: const Icon(Icons.lock),
+                                  title: const Text('Пароль:'),
+                                  subtitle: Text(teacher.password),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Закрыть'),
+                              ),
+                            ],
+                          ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('❌ Неверный пароль администратора'),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('Показать'),
               ),
             ],
           ),
@@ -254,6 +360,12 @@ class _EducationHeadTeachersScreenState
                             if (teacher.department != null)
                               Text('Кафедра: ${teacher.department}'),
                           ],
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.visibility),
+                          tooltip: 'Показать данные для входа',
+                          onPressed:
+                              () => _showTeacherCredentialsDialog(teacher),
                         ),
                       ),
                     );

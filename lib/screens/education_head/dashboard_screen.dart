@@ -70,6 +70,16 @@ class _EducationHeadDashboardState extends State<EducationHeadDashboard> {
             onTap: () => context.push('/education_head/teachers'),
           ),
           _DashboardCard(
+            icon: Icons.groups,
+            label: 'Группы',
+            onTap: () => context.push('/education_head/groups'),
+          ),
+          _DashboardCard(
+            icon: Icons.school,
+            label: 'Студенты',
+            onTap: () => context.push('/education_head/students'),
+          ),
+          _DashboardCard(
             icon: Icons.book,
             label: 'Предметы',
             onTap: () => context.push('/education_head/subjects'),

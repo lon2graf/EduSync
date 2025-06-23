@@ -12,6 +12,9 @@ import 'package:edu_sync/screens/education_head/education_head_login_screen.dart
 import 'package:edu_sync/screens/education_head/dashboard_screen.dart';
 import 'package:edu_sync/screens/education_head/profile.dart';
 import 'package:edu_sync/screens/education_head/teachers_screen.dart';
+import 'package:edu_sync/screens/education_head/group_screen.dart';
+import 'package:edu_sync/screens/education_head/students.dart';
+import 'package:edu_sync/screens/education_head/subject_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,6 +70,18 @@ void main() async {
       GoRoute(
         path: '/education_head/teachers',
         builder: (context, state) => const EducationHeadTeachersScreen(),
+      ),
+      GoRoute(
+        path: '/education_head/groups',
+        builder: (context, state) => const EducationHeadGroupsScreen(),
+      ),
+      GoRoute(
+        path: '/education_head/students',
+        builder: (context, state) => const EducationHeadStudentsScreen(),
+      ),
+      GoRoute(
+        path: '/education_head/subjects',
+        builder: (context, statue) => const EducationHeadSubjectsScreen(),
       ),
     ],
   );
