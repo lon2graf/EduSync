@@ -35,4 +35,24 @@ class TeacherServices {
       return [];
     }
   }
+
+  static Future<bool> loginTeacher(String email, String password) async {
+    final supClient = Supabase.instance.client;
+
+    try {
+      final response =
+          await supClient
+              .from('Teachers')
+              .select()
+              .eq('email', email)
+              .eq('password', password)
+              .limit(1)
+              .maybeSingle();
+
+      return response != null;
+    } catch (e) {
+      print('Ошибка при входе учителя: $e');
+      return false;
+    }
+  }
 }
