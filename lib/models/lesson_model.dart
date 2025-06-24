@@ -1,4 +1,4 @@
-class Lesson {
+class LessonModel {
   final int? id;
   final int subjectId;
   final int teacherId;
@@ -6,8 +6,8 @@ class Lesson {
   final String? topic;
   final int groupId;
 
-  Lesson({
-    required this.id,
+  LessonModel({
+    this.id,
     required this.subjectId,
     required this.teacherId,
     required this.date,
@@ -15,8 +15,8 @@ class Lesson {
     required this.groupId,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic> json) {
-    return Lesson(
+  factory LessonModel.fromJson(Map<String, dynamic> json) {
+    return LessonModel(
       id: json['id'] as int,
       subjectId: json['subject_id'] as int,
       teacherId: json['teacher_id'] as int,

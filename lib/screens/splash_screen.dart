@@ -49,14 +49,13 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             SvgPicture.asset('assets/EduSync.svg', width: 120, height: 120),
             const SizedBox(height: 24),
-            const Text(
+            Text(
               'EduSync',
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 38,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.5,
-                fontFamily: 'Roboto', // можно поменять на любой другой шрифт
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent.shade700,
+                letterSpacing: 1.2,
               ),
             ),
             const SizedBox(height: 12),

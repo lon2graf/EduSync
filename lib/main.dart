@@ -1,3 +1,4 @@
+import 'package:edu_sync/screens/teacher/profile_screen.dart';
 import 'package:edu_sync/supabase/supabase_config.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,8 @@ import 'package:edu_sync/screens/education_head/group_screen.dart';
 import 'package:edu_sync/screens/education_head/students.dart';
 import 'package:edu_sync/screens/education_head/subject_screen.dart';
 import 'package:edu_sync/screens/teacher/login_screen.dart';
+import 'package:edu_sync/screens/teacher/dashboard_screen.dart';
+import 'package:edu_sync/screens/teacher/lessons_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,11 +85,26 @@ void main() async {
       ),
       GoRoute(
         path: '/education_head/subjects',
-        builder: (context, statue) => const EducationHeadSubjectsScreen(),
+        builder: (context, state) => const EducationHeadSubjectsScreen(),
       ),
       GoRoute(
         path: '/teacher/login',
-        builder: (context, statue) => const TeacherLoginScreen(),
+        builder: (context, state) => const TeacherLoginScreen(),
+      ),
+      GoRoute(
+        path: '/teacher/dashboard',
+        builder: (context, state) {
+          final email = state.extra as String;
+          return TeacherDashboard();
+        },
+      ),
+      GoRoute(
+        path: '/teacher/profile',
+        builder: (context, state) => const TeacherProfileScreen(),
+      ),
+      GoRoute(
+        path: '/teacher/lessons',
+        builder: (context, state) => const TeacherAddLessonScreen(),
       ),
     ],
   );

@@ -55,4 +55,26 @@ class TeacherServices {
       return false;
     }
   }
+
+  static Future<TeacherModel?> getTeacherByEmail(String email) async {
+    final supClient = Supabase.instance.client;
+    try {
+      final response =
+          await supClient
+              .from('Teachers')
+              .select()
+              .eq('email', email)
+              .limit(1)
+              .maybeSingle();
+
+      if (response != null) {
+        return TeacherModel.fromJson(response);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Ошибка при получении преподавателя: $e');
+      return null;
+    }
+  }
 }

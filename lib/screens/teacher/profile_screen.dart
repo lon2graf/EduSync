@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:edu_sync/models/education_head_model.dart';
+import 'package:edu_sync/models/teacher_model.dart';
 import 'package:edu_sync/models/institution_model.dart';
-import 'package:edu_sync/services/education_head_cache.dart';
+import 'package:edu_sync/services/teacher_cache.dart';
 
-class EducationHeadProfileScreen extends StatefulWidget {
-  const EducationHeadProfileScreen({Key? key}) : super(key: key);
+class TeacherProfileScreen extends StatefulWidget {
+  const TeacherProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<EducationHeadProfileScreen> createState() =>
-      _EducationHeadProfileScreenState();
+  State<TeacherProfileScreen> createState() => _TeacherProfileScreenState();
 }
 
-class _EducationHeadProfileScreenState
-    extends State<EducationHeadProfileScreen> {
-  EducationHeadModel? _educationHead;
+class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
+  TeacherModel? _teacher;
   InstitutionModel? _institution;
   bool _isLoading = true;
 
@@ -21,17 +19,17 @@ class _EducationHeadProfileScreenState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final cachedHead = EducationHeadCache.cachedHead;
-    final cachedInstitution = EducationHeadCache.cachedInstitution;
+    final cachedTeacher = TeacherCache.currentTeacher;
+    final cachedInstitution = TeacherCache.currenInstitution;
 
-    if (cachedHead != null && cachedInstitution != null) {
+    if (cachedTeacher != null && cachedInstitution != null) {
       setState(() {
-        _educationHead = cachedHead;
+        _teacher = cachedTeacher;
         _institution = cachedInstitution;
         _isLoading = false;
       });
     } else {
-      print('❗ Не удалось прогрузить кэш профиля');
+      print('❗ Не удалось прогрузить кэш профиля преподавателя');
     }
   }
 
@@ -89,39 +87,49 @@ class _EducationHeadProfileScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Профиль руководителя'),
+        title: const Text('Профиль преподавателя'),
         centerTitle: true,
       ),
       body:
           _isLoading
               ? const Center(child: CircularProgressIndicator())
-              : _educationHead == null
-              ? const Center(child: Text('Не удалось загрузить данные профиля'))
+              : _teacher == null
+              ? const Center(child: Text('Не удалось загрузить профиль'))
               : SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
+                    Text(
+                      'EduSync',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent.shade700,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
                     const SizedBox(height: 24),
                     _buildSectionCard('Личные данные', [
                       _buildInfoTile(
                         'Фамилия',
-                        _educationHead!.surname,
+                        _teacher!.surname,
                         icon: Icons.person,
                       ),
-                      _buildInfoTile(
-                        'Имя',
-                        _educationHead!.name,
-                        icon: Icons.badge,
-                      ),
+                      _buildInfoTile('Имя', _teacher!.name, icon: Icons.badge),
                       _buildInfoTile(
                         'Отчество',
-                        _educationHead!.patronymic,
+                        _teacher!.patronymic,
                         icon: Icons.badge_outlined,
                       ),
                       _buildInfoTile(
                         'Email',
-                        _educationHead!.email,
+                        _teacher!.email,
                         icon: Icons.email,
+                      ),
+                      _buildInfoTile(
+                        'Кафедра',
+                        _teacher!.department,
+                        icon: Icons.account_tree_outlined,
                       ),
                     ]),
                     _buildSectionCard('Учебное заведение', [

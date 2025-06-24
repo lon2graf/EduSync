@@ -45,101 +45,124 @@ class _EducationHeadDashboardState extends State<EducationHeadDashboard> {
     setState(() => _isLoading = false);
   }
 
+  Widget _buildDashboardTile(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required String route,
+  }) {
+    return GestureDetector(
+      onTap: () => context.push(route),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(icon, size: 40, color: Colors.blueAccent),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(subtitle, style: const TextStyle(color: Colors.grey)),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios, size: 18),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Личный кабинет'), centerTitle: true),
-      body: GridView.count(
-        padding: const EdgeInsets.all(20),
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        children: [
-          _DashboardCard(
-            icon: Icons.person,
-            label: 'Профиль',
-            onTap: () => context.push('/education_head/profile'),
-          ),
-          _DashboardCard(
-            icon: Icons.group,
-            label: 'Учителя',
-            onTap: () => context.push('/education_head/teachers'),
-          ),
-          _DashboardCard(
-            icon: Icons.groups,
-            label: 'Группы',
-            onTap: () => context.push('/education_head/groups'),
-          ),
-          _DashboardCard(
-            icon: Icons.school,
-            label: 'Студенты',
-            onTap: () => context.push('/education_head/students'),
-          ),
-          _DashboardCard(
-            icon: Icons.book,
-            label: 'Предметы',
-            onTap: () => context.push('/education_head/subjects'),
-          ),
-          _DashboardCard(
-            icon: Icons.calendar_month,
-            label: 'Занятия',
-            onTap: () => context.push('/education_head/lessons'),
-          ),
-          _DashboardCard(
-            icon: Icons.bar_chart,
-            label: 'Успеваемость',
-            onTap: () => context.push('/education_head/performance'),
-          ),
-          _DashboardCard(
-            icon: Icons.logout,
-            label: 'Выйти',
-            onTap: () {
+      appBar: AppBar(
+        title: const Text('Панель руководителя'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
               EducationHeadCache.cachedHead = null;
               EducationHeadCache.cachedInstitution = null;
+              EducationHeadCache.cachedGroups = null;
+              EducationHeadCache.cachedStudentsByGroup.clear();
               context.go('/education_head/login');
             },
           ),
         ],
       ),
-    );
-  }
-}
-
-class _DashboardCard extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  const _DashboardCard({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.blue.shade100,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ListView(
           children: [
-            Icon(icon, size: 42, color: Colors.blueAccent),
-            const SizedBox(height: 12),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            _buildDashboardTile(
+              context,
+              icon: Icons.person,
+              title: 'Профиль',
+              subtitle: 'Просмотреть и отредактировать профиль',
+              route: '/education_head/profile',
+            ),
+            const SizedBox(height: 16),
+            _buildDashboardTile(
+              context,
+              icon: Icons.group,
+              title: 'Учителя',
+              subtitle: 'Список всех преподавателей учреждения',
+              route: '/education_head/teachers',
+            ),
+            const SizedBox(height: 16),
+            _buildDashboardTile(
+              context,
+              icon: Icons.groups,
+              title: 'Группы',
+              subtitle: 'Список учебных групп',
+              route: '/education_head/groups',
+            ),
+            const SizedBox(height: 16),
+            _buildDashboardTile(
+              context,
+              icon: Icons.school,
+              title: 'Студенты',
+              subtitle: 'Студенты по группам',
+              route: '/education_head/students',
+            ),
+            const SizedBox(height: 16),
+            _buildDashboardTile(
+              context,
+              icon: Icons.book,
+              title: 'Предметы',
+              subtitle: 'Предметы, читаемые в учреждении',
+              route: '/education_head/subjects',
+            ),
+            const SizedBox(height: 16),
+            _buildDashboardTile(
+              context,
+              icon: Icons.calendar_month,
+              title: 'Занятия',
+              subtitle: 'Планирование и список занятий',
+              route: '/education_head/lessons',
+            ),
+            const SizedBox(height: 16),
+            _buildDashboardTile(
+              context,
+              icon: Icons.bar_chart,
+              title: 'Успеваемость',
+              subtitle: 'Анализ и статистика оценок',
+              route: '/education_head/performance',
             ),
           ],
         ),
