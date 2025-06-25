@@ -1,3 +1,4 @@
+import 'package:edu_sync/models/lesson_model.dart';
 import 'package:edu_sync/screens/teacher/profile_screen.dart';
 import 'package:edu_sync/supabase/supabase_config.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ import 'package:edu_sync/screens/teacher/login_screen.dart';
 import 'package:edu_sync/screens/teacher/dashboard_screen.dart';
 import 'package:edu_sync/screens/teacher/lessons_screen.dart';
 import 'package:edu_sync/screens/teacher/lesson_comments_screen.dart';
+import 'package:edu_sync/screens/teacher/grade_screen.dart';
+import 'package:edu_sync/screens/teacher/attendance_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,6 +115,20 @@ void main() async {
         builder: (context, state) {
           final lesson_id = state.extra as int;
           return LessonCommentsScreen();
+        },
+      ),
+      GoRoute(
+        path: '/teacher/grades',
+        builder: (context, state) {
+          final lesson = state.extra as LessonModel;
+          return TeacherGradeScreen();
+        },
+      ),
+      GoRoute(
+        path: '/teacher/attendance',
+        builder: (context, state) {
+          final lesson = state.extra as LessonModel;
+          return LessonAttendanceScreen();
         },
       ),
     ],

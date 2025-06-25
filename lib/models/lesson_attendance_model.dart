@@ -1,11 +1,11 @@
 class LessonAttendance {
-  final int id;
+  final int? id;
   final int lessonId;
   final int studentId;
   final String status;
 
   LessonAttendance({
-    required this.id,
+    this.id,
     required this.lessonId,
     required this.studentId,
     required this.status,
@@ -22,7 +22,7 @@ class LessonAttendance {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'lesson_id': lessonId,
       'student_id': studentId,
       'status': status,

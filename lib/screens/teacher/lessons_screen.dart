@@ -104,12 +104,36 @@ class _TeacherAddLessonScreenState extends State<TeacherAddLessonScreen> {
             const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                onPressed: () {
-                  context.push('/teacher/lesson_comments', extra: lesson.id);
-                },
-                icon: const Icon(Icons.chat_bubble_outline),
-                label: const Text('Обсудить'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      context.push(
+                        '/teacher/lesson_comments',
+                        extra: lesson.id,
+                      );
+                    },
+                    icon: const Icon(Icons.chat_bubble_outline),
+                    label: const Text('Обсудить'),
+                  ),
+                  const SizedBox(width: 12),
+                  TextButton.icon(
+                    onPressed: () {
+                      context.push('/teacher/grades', extra: lesson);
+                    },
+                    icon: const Icon(Icons.grade_outlined),
+                    label: const Text('Оценить'),
+                  ),
+                  const SizedBox(width: 12),
+                  TextButton.icon(
+                    onPressed: () {
+                      context.push('/teacher/attendance', extra: lesson);
+                    },
+                    icon: const Icon(Icons.grade_outlined),
+                    label: const Text('Отметить посещаемость'),
+                  ),
+                ],
               ),
             ),
           ],
