@@ -19,6 +19,7 @@ import 'package:edu_sync/screens/education_head/subject_screen.dart';
 import 'package:edu_sync/screens/teacher/login_screen.dart';
 import 'package:edu_sync/screens/teacher/dashboard_screen.dart';
 import 'package:edu_sync/screens/teacher/lessons_screen.dart';
+import 'package:edu_sync/screens/teacher/lesson_comments_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,6 +106,13 @@ void main() async {
       GoRoute(
         path: '/teacher/lessons',
         builder: (context, state) => const TeacherAddLessonScreen(),
+      ),
+      GoRoute(
+        path: '/teacher/lesson_comments',
+        builder: (context, state) {
+          final lesson_id = state.extra as int;
+          return LessonCommentsScreen();
+        },
       ),
     ],
   );

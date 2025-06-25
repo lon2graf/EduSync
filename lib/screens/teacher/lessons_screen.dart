@@ -6,6 +6,7 @@ import 'package:edu_sync/services/lesson_services.dart';
 import 'package:edu_sync/services/teacher_cache.dart';
 import 'package:edu_sync/services/group_services.dart';
 import 'package:edu_sync/services/subject_services.dart';
+import 'package:go_router/go_router.dart';
 
 class TeacherAddLessonScreen extends StatefulWidget {
   const TeacherAddLessonScreen({super.key});
@@ -80,15 +81,37 @@ class _TeacherAddLessonScreenState extends State<TeacherAddLessonScreen> {
     );
 
     return Card(
-      child: ListTile(
-        leading: const Icon(Icons.book),
-        title: Text(subject.name),
-        subtitle: Column(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (lesson.topic != null) Text('Тема: ${lesson.topic}'),
-            Text('Группа: ${group.name}'),
-            Text('Дата: ${lesson.date.toLocal().toString().substring(0, 16)}'),
+            ListTile(
+              leading: const Icon(Icons.book),
+              title: Text(subject.name),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (lesson.topic != null) Text('Тема: ${lesson.topic}'),
+                  Text('Группа: ${group.name}'),
+                  Text(
+                    'Дата: ${lesson.date.toLocal().toString().substring(0, 16)}',
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: () {
+                  context.push('/teacher/lesson_comments', extra: lesson.id);
+                },
+                icon: const Icon(Icons.chat_bubble_outline),
+                label: const Text('Обсудить'),
+              ),
+            ),
           ],
         ),
       ),
