@@ -32,4 +32,23 @@ class AttendanceService {
       return false;
     }
   }
+
+  static Future<List<LessonAttendance>> getAttendanceByStudentId(
+    int studentId,
+  ) async {
+    final _supabase = Supabase.instance.client;
+    try {
+      final response = await _supabase
+          .from('Lessons_attendances')
+          .select()
+          .eq('student_id', studentId);
+
+      return (response as List)
+          .map((json) => LessonAttendance.fromJson(json))
+          .toList();
+    } catch (e) {
+      print('Ошибка при получении оценок студента: $e');
+      return [];
+    }
+  }
 }

@@ -1,4 +1,7 @@
 import 'package:edu_sync/models/lesson_model.dart';
+import 'package:edu_sync/screens/student/dashboard_screen.dart';
+import 'package:edu_sync/screens/student/lesson_comments.dart';
+import 'package:edu_sync/screens/student/profile_screen.dart';
 import 'package:edu_sync/screens/teacher/profile_screen.dart';
 import 'package:edu_sync/supabase/supabase_config.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +26,7 @@ import 'package:edu_sync/screens/teacher/lessons_screen.dart';
 import 'package:edu_sync/screens/teacher/lesson_comments_screen.dart';
 import 'package:edu_sync/screens/teacher/grade_screen.dart';
 import 'package:edu_sync/screens/teacher/attendance_screen.dart';
+import 'package:edu_sync/screens/student/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -130,6 +134,25 @@ void main() async {
           final lesson = state.extra as LessonModel;
           return LessonAttendanceScreen();
         },
+      ),
+      GoRoute(
+        path: '/student/login',
+        builder: (context, state) => const StudentLoginScreen(),
+      ),
+      GoRoute(
+        path: '/student/dashboard',
+        builder: (context, state) {
+          final email = state.extra as String;
+          return StudentDashboardScreen();
+        },
+      ),
+      GoRoute(
+        path: '/student/profile',
+        builder: (context, state) => const StudentProfileScreen(),
+      ),
+      GoRoute(
+        path: '/student/comment_lesson',
+        builder: (context, state) => const StudentLessonCommentsScreen(),
       ),
     ],
   );

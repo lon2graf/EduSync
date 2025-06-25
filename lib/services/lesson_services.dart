@@ -40,4 +40,18 @@ class LessonServices {
       return [];
     }
   }
+
+  static Future<LessonModel?> getLessonById(int lessonId) async {
+    final _supClient = Supabase.instance.client;
+
+    try {
+      final response =
+          await _supClient.from('Lessons').select().eq('id', lessonId).single();
+
+      return LessonModel.fromJson(response);
+    } catch (e) {
+      print('Ошибка при получении занятий: $e');
+      return null;
+    }
+  }
 }

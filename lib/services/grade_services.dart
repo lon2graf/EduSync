@@ -32,4 +32,22 @@ class GradeServices {
       return false;
     }
   }
+
+  static Future<List<GradeModel>> getGradesByStudentId(int studentId) async {
+    final _supabase = Supabase.instance.client;
+    try {
+      final response = await _supabase
+          .from('Grades')
+          .select()
+          .eq('student_id', studentId)
+          .order('lesson_id', ascending: false);
+
+      return (response as List)
+          .map((json) => GradeModel.fromJson(json))
+          .toList();
+    } catch (e) {
+      print('Ошибка при получении оценок студента: $e');
+      return [];
+    }
+  }
 }

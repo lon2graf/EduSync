@@ -96,7 +96,7 @@ class WelcomeScreen extends StatelessWidget {
               // Вход как ученик
               TextButton.icon(
                 onPressed: () {
-                  context.go('/student-login');
+                  context.go('/student/login');
                 },
                 icon: const Icon(Icons.person, color: Colors.black87),
                 label: const Text(
