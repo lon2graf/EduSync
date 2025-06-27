@@ -74,7 +74,7 @@ class _TeacherGradeScreenState extends State<TeacherGradeScreen> {
                       itemBuilder: (context, index) {
                         final student = _students[index];
                         return ListTile(
-                          title: Text(student.surname + ' ' + student.surname),
+                          title: Text(student.name + ' ' + student.surname),
                           trailing: DropdownButton<int>(
                             value: _grades[student.id],
                             items:

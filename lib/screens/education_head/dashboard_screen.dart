@@ -100,7 +100,7 @@ class _EducationHeadDashboardState extends State<EducationHeadDashboard> {
               EducationHeadCache.cachedInstitution = null;
               EducationHeadCache.cachedGroups = null;
               EducationHeadCache.cachedStudentsByGroup.clear();
-              context.go('/education_head/login');
+              context.go('/education_head/login_education_head');
             },
           ),
         ],

@@ -86,7 +86,17 @@ class _RequestStatusCheckScreen extends State<RequestStatusCheckScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Статус заявки"), centerTitle: true),
+      appBar: AppBar(
+        title: const Text("Статус заявки"),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.push('/welcome');
+          },
+        ),
+      ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child:

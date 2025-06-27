@@ -45,6 +45,16 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Логин"),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.push('/welcome');
+          },
+        ),
+      ),
       backgroundColor: Colors.blueGrey[50],
       body: Center(
         child: SingleChildScrollView(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:edu_sync/models/using_request_model.dart';
 import 'package:edu_sync/services/using_request_services.dart';
 import 'package:edu_sync/services/local_storage_preferences.dart';
+import 'package:go_router/go_router.dart';
 
 class UsingRequestScreen extends StatefulWidget {
   const UsingRequestScreen({Key? key});
@@ -67,9 +68,14 @@ class _UsingRequestScreenState extends State<UsingRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Подключение к системе'),
+        title: const Text("Отправка заявки"),
         centerTitle: true,
-        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.push('/welcome');
+          },
+        ),
       ),
       body: SafeArea(
         minimum: const EdgeInsets.all(16),
